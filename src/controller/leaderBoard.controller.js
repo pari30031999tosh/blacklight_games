@@ -1,4 +1,5 @@
 import httpErrorCodes from "../consts/httpErrorCode.js";
+import { generateToken } from "../service/auth.service.js";
 import { fetchLeaderBoard, fetchLeaderBoardByCountry, fetchUserRank } from "../service/leaderBoard.service.js";
 
 export const getLeaderBoard = async (req, res) => {
@@ -50,7 +51,7 @@ export const getLeaderBoardByCountry = async (req, res) => {
         })
 
     }catch(err){
-        console.log("error===========", err)
+        
         return res.status(httpErrorCodes.INTERNAL_SERVER_ERROR).json({
             status: httpErrorCodes.INTERNAL_SERVER_ERROR,
             message: 'error in fetching leaderboard',
@@ -89,4 +90,30 @@ export const getUserRank = async (req, res) => {
             error: err
         })
     }
+}
+
+export const dummyToken = async (req, res) => {
+    try{
+        let token = generateToken();
+        res.cookie('x-blight-token', token, {
+            path:"/",
+            domain: 'localhost',
+            httpOnly: true,
+            secure: true,
+            sameSite:'None',
+            maxAge: 36000000000
+        });
+        return res.status(200).json({
+            status: 200,
+            message: 'token is set as cookie',
+        })
+    }catch(err){
+        console.log("err======", err)
+        return res.status(500).json({
+            status: 500,
+            message: 'Internal Server Error',
+            error: err
+        })
+    }
+    
 }

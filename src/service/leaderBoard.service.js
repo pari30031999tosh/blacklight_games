@@ -1,4 +1,5 @@
 import { MySQLHelper } from "../helper/index.helper.js"
+import { generateToken } from "./auth.service.js"
 
 export const fetchLeaderBoard = async ({skip, limit}) =>{
     try{
@@ -126,3 +127,4 @@ export const fetchUserRank = async ({user_id}) => {
         throw(err)
     }
 }
+
